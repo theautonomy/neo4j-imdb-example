@@ -68,13 +68,19 @@ public class SimplePathFinder implements PathFinder {
     }
 
     private Iterator<Node> traversePath(Node startNode, RelationshipType relType, PathReturnEval returnEval) {
-        TraversalDescription traversalDescription = new TraversalDescriptionImpl()
-                .order(Traversal.postorderBreadthFirst())
-                .prune(Traversal.pruneAfterDepth(MAXIMUM_DEPTH))
-                .filter(returnEval)
-                .expand(Traversal.expanderForTypes(relType, Direction.BOTH));
-        final Traverser traverser = traversalDescription
-                .traverse(startNode);
+        TraversalDescription traversalDescription = new TraversalDescriptionImpl();
+        
+        traversalDescription = traversalDescription.order(Traversal.postorderBreadthFirst());
+
+        traversalDescription = traversalDescription.prune(Traversal.pruneAfterDepth(MAXIMUM_DEPTH));
+                //.prune(Evaluators.toDepth(MAXIMUM_DEPTH))
+
+        traversalDescription = traversalDescription.filter(returnEval);
+
+        traversalDescription = traversalDescription.expand(Traversal.expanderForTypes(relType, Direction.BOTH));
+
+        final Traverser traverser = traversalDescription.traverse(startNode);
+
         return traverser.nodes().iterator();
     }
 

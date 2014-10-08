@@ -167,7 +167,8 @@ class ImdbServiceImpl implements ImdbService
             throw new NoSuchElementException(
                 "Unable to find Kevin Bacon actor" );
         }
-        Node referenceNode = graphDbService.getReferenceNode();
+        //Node referenceNode = graphDbService.getReferenceNode();
+        Node referenceNode = graphDbService.getAllNodes().iterator().next();
         referenceNode.createRelationshipTo( baconNode, RelTypes.IMDB );
     }
 
@@ -181,8 +182,8 @@ class ImdbServiceImpl implements ImdbService
         }
         try
         {
-            baconNode = graphDbService.getReferenceNode().getSingleRelationship(
-                RelTypes.IMDB, Direction.OUTGOING ).getEndNode();
+            //baconNode = graphDbService.getReferenceNode().getSingleRelationship( RelTypes.IMDB, Direction.OUTGOING ).getEndNode();
+            baconNode = graphDbService.getAllNodes().iterator().next().getSingleRelationship( RelTypes.IMDB, Direction.OUTGOING ).getEndNode();
         }
         catch ( NoSuchElementException e )
         {
